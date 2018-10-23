@@ -29,8 +29,23 @@ const Options = styled.div`
   }
 `;
 
+const Error = styled.div`
+  color: red;
+  width: 100%;
+  margin-top: 5px;
+  margin-left: 10px;
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 export default class HomePage extends React.PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      realtyNumber: '',
+      error: null,
+    };
+  }
+
   sendRequest = () => {
     const myInit = { method: 'GET' };
 
@@ -46,14 +61,41 @@ export default class HomePage extends React.PureComponent {
       })
       .then(response => response.json().then(data => data));
   };
+
+  setRealtyNumber = e => {
+    console.log(e.target.value);
+    const regex = /^[0-9:\b]+$/;
+    const { value } = e.target;
+    if (regex.test(value)) {
+      this.setState({
+        realtyNumber: e.target.value,
+      });
+    }
+  };
+
+  handleSearchClick = () => {
+    if (this.state.realtyNumber.length < 5) {
+      this.setState({
+        error: 'минимальная длина 5 символов',
+      });
+    } else {
+      this.sendRequest();
+    }
+  };
+
   render() {
     return (
       <Wrapper>
         <h2>Введите кадастровый номер:</h2>
         <Options>
-          <input placeholder="кадастровый номер" />
-          <button onClick={() => this.sendRequest()}>поиск</button>
+          <input
+            placeholder="кадастровый номер"
+            onChange={this.setRealtyNumber}
+            value={this.state.realtyNumber}
+          />
+          <button onClick={() => this.handleSearchClick()}>поиск</button>
         </Options>
+        {this.state.error && <Error> {this.state.error} </Error>}
       </Wrapper>
     );
   }
