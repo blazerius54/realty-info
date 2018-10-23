@@ -20,6 +20,8 @@ injectGlobal`
     background-color: #fafafa;
     min-height: 100%;
     min-width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   p,
