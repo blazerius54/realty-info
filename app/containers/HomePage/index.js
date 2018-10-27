@@ -76,7 +76,7 @@ export default class HomePage extends React.PureComponent {
   handleSearchClick = () => {
     if (this.state.realtyNumber.length < 5) {
       this.setState({
-        error: 'минимальная длина 5 символов',
+        error: 'минимальная длина номера 5 символов',
       });
     } else {
       this.sendRequest();
@@ -84,6 +84,7 @@ export default class HomePage extends React.PureComponent {
   };
 
   render() {
+    const { error, realtyNumber } = this.state;
     return (
       <Wrapper>
         <h2>Введите кадастровый номер:</h2>
@@ -91,11 +92,11 @@ export default class HomePage extends React.PureComponent {
           <input
             placeholder="кадастровый номер"
             onChange={this.setRealtyNumber}
-            value={this.state.realtyNumber}
+            value={realtyNumber}
           />
           <button onClick={() => this.handleSearchClick()}>поиск</button>
         </Options>
-        {this.state.error && <Error> {this.state.error} </Error>}
+        {error && <Error> {error} </Error>}
       </Wrapper>
     );
   }
