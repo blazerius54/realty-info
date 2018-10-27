@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import RealtyList from '../../components/realtyList';
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,6 +44,7 @@ export default class HomePage extends React.PureComponent {
     this.state = {
       realtyNumber: '',
       error: null,
+      realtyList: [],
     };
   }
 
@@ -59,11 +61,12 @@ export default class HomePage extends React.PureComponent {
         }
         return response;
       })
-      .then(response => response.json().then(data => data));
+      .then(response =>
+        response.json().then(realtyList => this.setState({ realtyList })),
+      );
   };
 
   setRealtyNumber = e => {
-    console.log(e.target.value);
     const regex = /^[0-9:\b]+$/;
     const { value } = e.target;
     if (regex.test(value)) {
@@ -84,7 +87,7 @@ export default class HomePage extends React.PureComponent {
   };
 
   render() {
-    const { error, realtyNumber } = this.state;
+    const { error, realtyNumber, realtyList } = this.state;
     return (
       <Wrapper>
         <h2>Введите кадастровый номер:</h2>
@@ -97,6 +100,7 @@ export default class HomePage extends React.PureComponent {
           <button onClick={() => this.handleSearchClick()}>поиск</button>
         </Options>
         {error && <Error> {error} </Error>}
+        {realtyList.length > 0 && <RealtyList realtyList={realtyList} />}
       </Wrapper>
     );
   }
