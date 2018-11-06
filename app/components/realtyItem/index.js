@@ -2,7 +2,7 @@ import React from 'react';
 
 /* eslint-disable react/prefer-stateless-function */
 const RealtyItem = props => {
-  const { index, objectCn, addressNotes } = props;
+  const { index, objectCn, addressNotes, handleObjectCnClick } = props;
 
   let { objectType } = props;
   if (objectType === 'parcel') {
@@ -18,7 +18,7 @@ const RealtyItem = props => {
   return (
     <tr>
       <td>{index + 1}</td>
-      <td>{objectCn}</td>
+      <td><button onClick={() => handleObjectCnClick(objectCn)}>{objectCn}</button></td>
       <td>{objectType}</td>
       <td>{addressNotes}</td>
     </tr>

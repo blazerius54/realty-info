@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import RealtyList from '../../components/realtyList';
+import RealtyList from '../realtyList';
 
 const Wrapper = styled.div`
   display: flex;
