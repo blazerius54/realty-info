@@ -10,9 +10,9 @@ const RealtyListTable = styled.table`
   border-radius: 4px;
   overflow: hidden;
   border: 2px solid #999;
-  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 5px 12px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 5px 12px 16px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 12px 16px 0px rgba(0, 0, 0, 0.75);
 
   th {
     /* background: #ddd; */
