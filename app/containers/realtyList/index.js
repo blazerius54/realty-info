@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import RealtyItem from '../../components/realtyItem';
 import reducer from './reducer';
-import { toggleModal } from './actions';
+import { toggleModal, closeModal } from './actions';
 import injectReducer from '../../utils/injectReducer';
 import { makeSelectShowModal } from './selectors';
 import RealtyModal from '../../components/realtyModal';
@@ -16,6 +16,7 @@ const ContentWrapper = styled.div`
 
 const RealtyListTable = styled.table`
   min-width: 700px;
+  max-width: 800px;
   border-collapse: separate;
   overflow: hidden;
   margin: 40px 0;
@@ -61,6 +62,10 @@ const RealtyListTable = styled.table`
     border-right: 1px solid #999;
     border-bottom: 1px solid #999;
     text-align: center;
+
+    button {
+      cursor: pointer;
+    }
   }
 
   td:last-child {
@@ -69,6 +74,10 @@ const RealtyListTable = styled.table`
 
   tr:nth-child(odd) {
     background: #f2f2f2;
+  }
+
+  tr:hover {
+    background: #d1d1d1;
   }
 `;
 
@@ -89,7 +98,7 @@ class RealtyList extends React.PureComponent {
   };
 
   render() {
-    const { showModal, realtyList, toggleModal } = this.props;
+    const { showModal, realtyList, toggleModal, closeModal } = this.props;
     const { activeObjectCn } = this.state;
 
     return (
@@ -97,7 +106,8 @@ class RealtyList extends React.PureComponent {
         {showModal && (
           <RealtyModal
             activeObjectCn={activeObjectCn}
-            toggleModal={this.props.toggleModal}
+            toggleModal={toggleModal}
+            closeModal={closeModal}
         />)}
         <RealtyListTable>
           <tbody>
@@ -130,7 +140,7 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(
   mapStateToProps,
-  { toggleModal },
+  { toggleModal, closeModal },
 );
 
 const withReducer = injectReducer({ key: 'RealtyList', reducer });

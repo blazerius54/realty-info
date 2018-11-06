@@ -67,6 +67,10 @@ const ContentRow = styled.div`
 
   p {
     margin: 0;
+
+    &:last-child {
+      text-transform: lowercase;
+    }
   }
 `;
 /* eslint-disable react/prefer-stateless-function */
@@ -100,20 +104,23 @@ export default class RealtyModal extends React.PureComponent {
           const { dateCreated, name, objectDesc } = realtyInfo.objectData;
           const type =
             realtyInfo.type === 'parcel' ? 'parcelData' : realtyInfo.type;
-          let test = '';
+          let realtyType = '';
           if (name) {
-            test = name.match(/\d+/) ? objectDesc : name;
+            realtyType = name.match(/\d+/) ? objectDesc : name;
           } else {
-            test = objectDesc;
+            realtyType = objectDesc;
           }
           this.setState({
             dateCreated,
-            // name: name || objectDesc,
-            name: test,
+            name: realtyType,
             encumbrancesExists: realtyInfo.objectData[type].encumbrancesExists,
           });
         }),
       );
+  }
+
+  componentWillUnmount() {
+    this.props.closeModal();
   }
 
   closeModal = () => {
