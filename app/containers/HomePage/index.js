@@ -1,76 +1,47 @@
 import React from 'react';
-import styled from 'styled-components';
 import RealtyList from '../realtyList';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 50px;
-`;
-
-const Options = styled.div`
-  display: flex;
-  margin-top: 50px;
-  position: relative;
-
-  input {
-    border-bottom: 2px solid #42a7f4;
-    margin-right: 10px;
-    text-align: center;
-    font-size: 150%;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  button {
-    background: #f4e841;
-    padding: 10px;
-  }
-`;
-
-const Error = styled.div`
-  color: red;
-  width: 100%;
-  margin-top: 5px;
-  /* margin-left: 10px; */
-  /* display: flex; */
-  /* justify-content: center; */
-  position: absolute;
-  top: 40px;
-`;
-
+import { Wrapper, Options, Error } from './styled';
+import Loader from '../../components/loader';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import injectReducer from '../../utils/injectReducer';
+import injectSaga from '../../utils/injectSaga';
+import saga from './saga';
+import reducer from './reducer';
+import { makeSelectIsLoading, makeSelectRealtyList } from './selectors';
+import { requestRealtyList } from './actions';
 /* eslint-disable react/prefer-stateless-function */
-export default class HomePage extends React.PureComponent {
+class HomePage extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      realtyNumber: '',
+      realtyNumber: '50:10',
       error: null,
       realtyList: [],
     };
   }
 
-  sendRequest = () => {
-    const myInit = { method: 'GET' };
+  // sendRequest = () => {
+  //   const myInit = { method: 'GET' };
 
-    fetch(
-      `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/${this.state.realtyNumber}*`,
-      // `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/50:01*`,
-      myInit,
-    )
-      .then(response => {
-        if (response.status !== 200) {
-          return;
-        }
-        return response;
-      })
-      .then(response =>
-        response.json().then(realtyList => this.setState({ realtyList })),
-      );
-  };
+  //   fetch(
+  //     `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/${
+  //       this.state.realtyNumber
+  //     }*`,
+  //     // `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/50:01*`,
+  //     myInit,
+  //   )
+  //     .then(response => {
+  //       if (response.status !== 200) {
+  //         return;
+  //       }
+  //       return response;
+  //     })
+  //     .then(response =>
+  //       response.json().then(realtyList => this.setState({ realtyList })),
+  //     );
+  // };
 
   setRealtyNumber = e => {
     const regex = /^[0-9:\b]+$/;
@@ -88,7 +59,7 @@ export default class HomePage extends React.PureComponent {
         error: 'минимальная длина номера 5 символов',
       });
     } else {
-      this.sendRequest();
+      this.props.requestRealtyList(this.state.realtyNumber);
       this.setState({
         error: null,
       });
@@ -96,7 +67,8 @@ export default class HomePage extends React.PureComponent {
   };
 
   render() {
-    const { error, realtyNumber, realtyList } = this.state;
+    const { error, realtyNumber } = this.state;
+    const { realtyList, isLoading } = this.props;
     return (
       <Wrapper>
         <h2>Введите кадастровый номер:</h2>
@@ -110,7 +82,30 @@ export default class HomePage extends React.PureComponent {
           <button onClick={() => this.handleSearchClick()}>поиск</button>
         </Options>
         {realtyList.length > 0 && <RealtyList realtyList={realtyList} />}
+        {isLoading && <Loader />}
       </Wrapper>
     );
   }
 }
+
+const mapStateToProps = createStructuredSelector({
+  isLoading: makeSelectIsLoading(),
+  realtyList: makeSelectRealtyList(),
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  { requestRealtyList },
+);
+
+const withReducer = injectReducer({ key: 'HomePage', reducer });
+const withSaga = injectSaga({ key: 'LoHomePagegin', saga });
+
+// Login.propTypes = {
+// };
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(HomePage);
