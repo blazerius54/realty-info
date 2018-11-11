@@ -18,30 +18,8 @@ class HomePage extends React.PureComponent {
     this.state = {
       realtyNumber: '50:10',
       error: null,
-      realtyList: [],
     };
   }
-
-  // sendRequest = () => {
-  //   const myInit = { method: 'GET' };
-
-  //   fetch(
-  //     `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/${
-  //       this.state.realtyNumber
-  //     }*`,
-  //     // `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/50:01*`,
-  //     myInit,
-  //   )
-  //     .then(response => {
-  //       if (response.status !== 200) {
-  //         return;
-  //       }
-  //       return response;
-  //     })
-  //     .then(response =>
-  //       response.json().then(realtyList => this.setState({ realtyList })),
-  //     );
-  // };
 
   setRealtyNumber = e => {
     const regex = /^[0-9:\b]+$/;
@@ -100,9 +78,6 @@ const withConnect = connect(
 
 const withReducer = injectReducer({ key: 'HomePage', reducer });
 const withSaga = injectSaga({ key: 'LoHomePagegin', saga });
-
-// Login.propTypes = {
-// };
 
 export default compose(
   withReducer,
