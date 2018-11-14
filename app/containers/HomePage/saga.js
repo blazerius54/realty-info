@@ -1,24 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { REQUEST_REALTY_LIST } from './consts';
 import { realtyListSuccess } from './actions';
+import { requestRealtyList } from '../../network';
 
-const sendRequest = cadNumber => {
-  const myInit = { method: 'GET' };
-
-  return fetch(
-    `https://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/${cadNumber}*`,
-    myInit,
-  )
-    .then(response => {
-      if (response.status !== 200) {
-        return;
-      }
-      return response;
-    })
-    .then(response =>
-      response.json().then(realtyList => realtyList),
-    );
-};
+const sendRequest = cadNumber => requestRealtyList(cadNumber);
 
 function getRealtyList(cadNumber) {
   return sendRequest(cadNumber);
