@@ -1,10 +1,10 @@
 import React from 'react';
-import RealtyList from '../realtyList';
-import { Wrapper, Options, Error } from './styled';
-import Loader from '../../components/loader';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import RealtyList from '../realtyList';
+import { Wrapper, Options, Error } from './styled';
+import Loader from '../../components/loader';
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
 import saga from './saga';

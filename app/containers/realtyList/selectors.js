@@ -6,4 +6,7 @@ const selectHome = state => state.get('RealtyList', initialState);
 const makeSelectShowModal = () =>
   createSelector(selectHome, homeState => homeState.get('showModal'));
 
-export { selectHome, makeSelectShowModal };
+const makeSelectIsLoading = () =>
+  createSelector(selectHome, homeState => homeState.get('isLoading'));
+
+export { selectHome, makeSelectShowModal, makeSelectIsLoading };
